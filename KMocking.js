@@ -1,5 +1,5 @@
 
-function Mock(obj)
+function Mock()
 {   
     return {
         
