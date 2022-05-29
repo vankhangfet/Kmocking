@@ -7,7 +7,7 @@ Example
   ```js
   const KMock = require('KMocking');
  
-  let mock = KMock.Mock(helper);
+  let mock = KMock.Mock();
 
   // Create some object instance
   let dog = new Dog();
