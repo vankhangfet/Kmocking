@@ -22,11 +22,11 @@ function Mock()
         },
         returns: function(value)
         {    
-            console.log("Invoke");
-             //console.log("expected mocking:" + value)
-             let proxied = this.mole[this.targetFunc]; 
-             //console.log(proxied);
-             this.mole[this.targetFunc] = function() {
+            //console.log("Invoke");
+            //console.log("expected mocking:" + value)
+            let proxied = this.mole[this.targetFunc]; 
+            //console.log(proxied);
+            this.mole[this.targetFunc] = function() {
                 return value;
             }
             return this.mole[this.targetFunc]();
