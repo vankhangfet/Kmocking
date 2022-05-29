@@ -1,12 +1,50 @@
 const assert = require('assert');
+const { Exact, Times } = require('../KMocking');
 const KMock = require('../KMocking');
+
+describe('Verify Setup function', function () {
+  describe('Invoke target function', function () {
+    it('Target function shoul be invoked 1 times', function () {
+      let Dog = function(){
+          
+          return{
+           eat: function(food){
+              return food;
+      
+           },
+           say: function ()
+           {
+               return "hello";
+           }
+          }
+      }
+      
+      let mock = KMock.Mock();
+
+      let dog = new Dog();
+      
+      let mockDog = mock.mole(dog);
+
+      mockDog.setup(_dogmock => _dogmock.eat("candy")).returns('Yummy');
+     
+      let isVerify = mockDog.verify(_dogmock => _dogmock.eat("candy"),Times.exact(0));
+      assert.equal(isVerify, false);
+
+      let isVerify2 = mockDog.verify(_dogmock => _dogmock.eat("candy"),Times.exact(1));
+      assert.equal(isVerify2, true);
+
+     
+   });
+  });
+});
 
 describe('Verify Setup function', function () {
     describe('Should return value of function as mocking value', function () {
       it('Returns function should return Yummy', function () {
         let Dog = function(){
-    
+            
             return{
+
              eat: function(food){
                 //console.log(food);
                 return food;

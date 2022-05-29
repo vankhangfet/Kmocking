@@ -6,6 +6,7 @@ function Mock()
         mole: function(obj)
         {   
             this.mole = obj;
+            this.exec = [];
             return this;
         },
 
@@ -14,6 +15,7 @@ function Mock()
            let param = funcCall.toString();
            let tempData = param.split(".")[1];
            let targetFunc = tempData.split("(")[0];
+           this.exec[targetFunc] = 0;
            //console.log(targetFunc);
            this.targetFunc = targetFunc; 
            //this.funcCall = funcCall;
@@ -29,11 +31,16 @@ function Mock()
             this.mole[this.targetFunc] = function() {
                 return value;
             }
+            this.exec[this.targetFunc]++;
+            // Number of invoke target function.
+            //console.log(this.exec[this.targetFunc]++);
             return this.mole[this.targetFunc]();
         },
         verify: function(func,times)
-        {
+        {   
+            // Need to check func again?
             
+            return this.exec[this.targetFunc] == times?true:false;
         },
         throws: function()
         {
@@ -43,12 +50,22 @@ function Mock()
     }
 }
 
-function Exact(times)
-{
-    return times;
+function Times()
+{   
+    return {
+      
+        exact: function(times){
+            return times;
+        },
+        atLeast: function(times)
+        {
+            return times;
+        }
+
+    };
 }
 
 module.exports = {
     Mock:Mock,
-    Exact:Exact
+    Times: new Times()
 }
