@@ -4,7 +4,7 @@ Kmocking is lightweight mocking lib.
 Kmocking inspired by the Moq library for .Net.
 
 Example
-  
+  ```js
   const KMock = require('KMocking');
  
   let mock = KMock.Mock(helper);
@@ -20,3 +20,4 @@ Example
 
   // Invoke
   let result = dog.eat('meat');
+  ```
