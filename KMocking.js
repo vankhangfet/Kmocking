@@ -26,28 +26,44 @@ function Mock()
         {    
             //console.log("Invoke");
             //console.log("expected mocking:" + value)
+
             let proxied = this.mole[this.targetFunc]; 
             //console.log(proxied);
-            this.mole[this.targetFunc] = function() {
+            this.mole.__invoked = this.exec[this.targetFunc];
+            this.mole[this.targetFunc] = function(invoke) {
+                invoke++;
+                console.log(this);
+                console.log("Invoke:" + invoke);
                 return value;
             }
-            this.exec[this.targetFunc]++;
+            //this.exec[this.targetFunc]++;
             // Number of invoke target function.
             //console.log(this.exec[this.targetFunc]++);
-            return this.mole[this.targetFunc]();
+            return this.mole[this.targetFunc](this.mole.__invoked);
         },
         verify: function(func,times)
         {   
             // Need to check func again?
-            
-            return this.exec[this.targetFunc] == times?true:false;
+            console.log(times.checkingType);
+            console.log(times.times);
+            let currentInvoke = this.exec[this.targetFunc] -1;
+            console.log(this.exec[this.targetFunc]);
+            if(times.checkingType == InvokeType.exactly)
+               return currentInvoke == times.times?true:false;
+            if(times.checkingType == InvokeType.atLeast)
+               return currentInvoke >= times.times?true:false;
         },
-        throws: function()
-        {
-            return this;
+        throws: function(errorMessage)
+        {   this.errorMessage = errorMessage;
+            return this.errorMessage;
         }
 
     }
+}
+
+let InvokeType = {
+    exactly: 'exactly',
+    atLeast: 'atLeast'
 }
 
 function Times()
@@ -55,11 +71,17 @@ function Times()
     return {
       
         exact: function(times){
-            return times;
+            return {
+                     times: times,
+                     checkingType: InvokeType.exactly
+                   }
         },
         atLeast: function(times)
         {
-            return times;
+            return {
+                times:times,
+                checkingType: InvokeType.atLeast
+            };
         }
 
     };

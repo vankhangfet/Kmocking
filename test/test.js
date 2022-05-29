@@ -27,13 +27,18 @@ describe('Verify Setup function', function () {
 
       mockDog.setup(_dogmock => _dogmock.eat("candy")).returns('Yummy');
      
-      let isVerify = mockDog.verify(_dogmock => _dogmock.eat("candy"),Times.exact(0));
-      assert.equal(isVerify, false);
+      dog.eat("chocolate");
+      dog.eat("chocolate");
 
-      let isVerify2 = mockDog.verify(_dogmock => _dogmock.eat("candy"),Times.exact(1));
-      assert.equal(isVerify2, true);
+      //let isVerify = mockDog.verify(_dogmock => _dogmock.eat("candy"),Times.exact(0));
+      //assert.equal(isVerify, false);
 
-     
+      //let isVerify2 = mockDog.verify(_dogmock => _dogmock.eat("candy"),Times.atLeast(1));
+      //assert.equal(isVerify2, true);
+
+      //let isVerify3 = mockDog.verify(_dogmock => _dogmock.eat("candy"),Times.exact(2));
+      //assert.equal(isVerify3, true);
+
    });
   });
 });
