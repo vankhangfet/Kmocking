@@ -2,6 +2,7 @@ const assert = require('assert');
 const { Exact, Times } = require('../KMocking');
 const KMock = require('../KMocking');
 
+
 describe('Verify Setup function', function () {
   describe('Invoke target function', function () {
     it('Target function shoul be invoked 1 times', function () {
@@ -30,7 +31,7 @@ describe('Verify Setup function', function () {
      
       dog.eat("chocolate");
       dog.eat("chocolate");
-      
+      dog.eat("chocolate");
       
 
       let isVerify = mockDog.verify(_dogmock => _dogmock.eat("candy"),Times.exact(0));
@@ -39,11 +40,12 @@ describe('Verify Setup function', function () {
       let isVerify2 = mockDog.verify(_dogmock => _dogmock.eat("candy"),Times.atLeast(1));
       assert.equal(isVerify2, true);
 
-      let isVerify3 = mockDog.verify(_dogmock => _dogmock.eat("candy"),Times.exact(2));
+      let isVerify3 = mockDog.verify(_dogmock => _dogmock.eat("candy"),Times.exact(3));
       assert.equal(isVerify3, true);
        
       dog.say("hi");
-      let isVerify4 = mockDog.verify(_dogmock => _dogmock.say("hi"),Times.exact(1));
+      dog.say("hi");
+      let isVerify4 = mockDog.verify(_dogmock => _dogmock.say("hi"),Times.exact(2));
      
       assert.equal(isVerify4, true);
 
@@ -51,7 +53,7 @@ describe('Verify Setup function', function () {
   });
 });
 
-/*
+
 describe('Verify Setup function', function () {
     describe('Should return value of function as mocking value', function () {
       it('Returns function should return Yummy', function () {
@@ -85,8 +87,10 @@ describe('Verify Setup function', function () {
 
         let result2 = dog.say("hello");
         assert.equal(result2, 'chao');
-       
+        
+        let result3 = dog.eat("chocolate");
+        assert.equal(result3, 'Yummy');
      });
     });
   });
-  */
+  

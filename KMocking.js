@@ -1,4 +1,12 @@
 
+function getFuncName(funcCall)
+{  
+    let param = funcCall.toString();
+    let tempData = param.split(".")[1];
+    let targetFunc = tempData.split("(")[0];
+    return targetFunc;
+}
+
 function Mock()
 {   
     return {
@@ -7,36 +15,41 @@ function Mock()
         {   
             this.mole = obj;
             this.exec = [];
+            this.targetsFunc = [];
             return this;
         },
 
         setup: function(funcCall)
         {  
-           let param = funcCall.toString();
-           let tempData = param.split(".")[1];
-           let targetFunc = tempData.split("(")[0];
+           //let param = funcCall.toString();
+           //let tempData = param.split(".")[1];
+           //let targetFunc = tempData.split("(")[0];
+
+           let  targetFunc = getFuncName(funcCall);
+
            this.exec[targetFunc] = 0;
+           this.targetsFunc[targetFunc] = targetFunc;
            this.targetFunc = targetFunc; 
            return this;
         },
         returns: function(value)
         {    
-            //console.log("Invoke");
-            //console.log("expected mocking:" + value)
+            let invokeFun = this.targetFunc;
+            this.targetFunc = "";
             this.mole.mockval = this;
-            this.mole[this.targetFunc] = function() {
-                console.log(this.mockval);
-                this.mockval.exec[this.mockval.targetFunc]++;
+            this.mole[invokeFun] = function() {
+                this.mockval.exec[invokeFun]++;
+                //console.log(this.mockval);
                 return value;
             }
-            return this.mole[this.targetFunc]();
+
+            return this;
         },
         verify: function(func,times)
         {   
-            // Need to check func again?
-            //console.log(times.checkingType);
-            //console.log(times.times);
-            let currentInvoke = this.exec[this.targetFunc] -1;
+           
+            let  nameFunc = getFuncName(func);
+            let currentInvoke = this.exec[nameFunc];
             //console.log(this.exec[this.targetFunc]);
             if(times.checkingType == InvokeType.exactly)
                return currentInvoke == times.times?true:false;
