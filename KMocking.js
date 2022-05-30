@@ -16,38 +16,28 @@ function Mock()
            let tempData = param.split(".")[1];
            let targetFunc = tempData.split("(")[0];
            this.exec[targetFunc] = 0;
-           //console.log(targetFunc);
            this.targetFunc = targetFunc; 
-           //this.funcCall = funcCall;
-           //console.log(this);
            return this;
         },
         returns: function(value)
         {    
             //console.log("Invoke");
             //console.log("expected mocking:" + value)
-
-            let proxied = this.mole[this.targetFunc]; 
-            //console.log(proxied);
-            this.mole.__invoked = this.exec[this.targetFunc];
-            this.mole[this.targetFunc] = function(invoke) {
-                invoke++;
-                console.log(this);
-                console.log("Invoke:" + invoke);
+            this.mole.mockval = this;
+            this.mole[this.targetFunc] = function() {
+                console.log(this.mockval);
+                this.mockval.exec[this.mockval.targetFunc]++;
                 return value;
             }
-            //this.exec[this.targetFunc]++;
-            // Number of invoke target function.
-            //console.log(this.exec[this.targetFunc]++);
-            return this.mole[this.targetFunc](this.mole.__invoked);
+            return this.mole[this.targetFunc]();
         },
         verify: function(func,times)
         {   
             // Need to check func again?
-            console.log(times.checkingType);
-            console.log(times.times);
+            //console.log(times.checkingType);
+            //console.log(times.times);
             let currentInvoke = this.exec[this.targetFunc] -1;
-            console.log(this.exec[this.targetFunc]);
+            //console.log(this.exec[this.targetFunc]);
             if(times.checkingType == InvokeType.exactly)
                return currentInvoke == times.times?true:false;
             if(times.checkingType == InvokeType.atLeast)
